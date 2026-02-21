@@ -11,7 +11,7 @@ export function cleanInput(input: string): string[] {
 export function startREPL(state: State): void {
   state.rl.prompt();
 
-  state.rl.on("line", (line: string) => {
+  state.rl.on("line", async (line: string) => {
     const words = cleanInput(line);
 
     if (words.length === 0) {
@@ -29,9 +29,13 @@ export function startREPL(state: State): void {
     }
 
     try {
-      command.callback(state);
+      await command.callback(state);
     } catch (err) {
-      console.log((err as Error).message);
+      if (err instanceof Error) {
+        console.log(err.message);
+      } else {
+        console.log(String(err));
+      }
     }
 
     state.rl.prompt();
