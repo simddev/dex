@@ -25,12 +25,30 @@ export type Location = {
   pokemon_encounters: PokemonEncounter[];
 };
 
+export type Pokemon = {
+  name: string;
+  base_experience: number;
+  height: number;
+  weight: number;
+  stats: {
+    base_stat: number;
+    stat: {
+      name: string;
+    };
+  }[];
+  types: {
+    slot: number;
+    type: {
+      name: string;
+    };
+  }[];
+};
+
 export class PokeAPI {
   private static readonly baseURL = "https://pokeapi.co/api/v2";
   private cache: Cache;
 
   constructor() {
-    // 5 minutes cache (adjust if you want)
     this.cache = new Cache(5 * 60 * 1000);
   }
 
@@ -58,5 +76,10 @@ export class PokeAPI {
   async fetchLocation(locationName: string): Promise<Location> {
     const url = `${PokeAPI.baseURL}/location-area/${encodeURIComponent(locationName)}`;
     return this.fetchWithCache<Location>(url);
+  }
+
+  async fetchPokemon(pokemonName: string): Promise<Pokemon> {
+    const url = `${PokeAPI.baseURL}/pokemon/${encodeURIComponent(pokemonName)}`;
+    return this.fetchWithCache<Pokemon>(url);
   }
 }

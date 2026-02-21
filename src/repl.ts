@@ -28,8 +28,10 @@ export function startREPL(state: State): void {
       return;
     }
 
+    const args = words.slice(1);
+
     try {
-      await command.callback(state);
+      await command.callback(state, ...args);
     } catch (err) {
       if (err instanceof Error) {
         console.log(err.message);
