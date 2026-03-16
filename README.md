@@ -1,203 +1,150 @@
 # Pokedex CLI (TypeScript)
 
-A command-line Pokedex built in TypeScript as part of the Boot.dev "Build a Pokedex" project.
+A command-line Pokedex built in TypeScript.
 
-This app lets you explore Pokémon location areas, inspect the Pokémon found there, catch Pokémon, and keep track of your personal Pokedex \u2014 all from a REPL (interactive terminal prompt).
+This project was created as part of the Boot.dev â€œBuild a Pokedexâ€ project and uses the PokeAPI as its data source. It lets you browse PokÃ©mon location areas, explore encounters, catch PokÃ©mon, inspect the ones you have caught, and list your PokÃ©dex entries from an interactive REPL in the terminal.
 
-## Features
+## Motivation
 
-- REPL-based CLI (`Pokedex >`)
-- `help` and `exit` commands
-- `map` / `mapb` pagination through Pokémon world location areas
-- `explore <area>` to list Pokémon in a location area
-- `catch <pokemon>` with catch chance based on base experience
-- `inspect <pokemon>` to see details of caught Pokémon
-- `pokedex` to list all caught Pokémon
-- In-memory caching for PokeAPI responses (faster repeated requests)
+This project was built to practice core backend and CLI development concepts in TypeScript:
 
-## Tech Stack
+- working with external HTTP APIs
+- structuring a small multi-file Node.js application
+- building a REPL-style command-line interface
+- handling state across commands
+- introducing simple in-memory caching for repeated API calls
 
-- TypeScript
-- Node.js
-- Vitest (tests)
-- PokeAPI (data source)
+The goal was not to build a full game, but a clean, interactive terminal application that demonstrates solid TypeScript fundamentals and good project structure.
 
-## Setup
+## Quick Start
 
-### 1) Clone the repository
+### 1. Clone the repository
 
 ```bash
-git clone <YOUR_REPO_URL>
-cd pokedex
+git clone https://github.com/simddev/dex.git
+cd dex
 ```
 
-### 2) Use the correct Node version (recommended)
+### 2. Use the project Node version
 
-If you use `nvm`:
+If you use `nvm`, the repository includes an `.nvmrc` file, so you can run:
 
 ```bash
 nvm use
 ```
 
-If you don\u2019t have the version installed yet:
+If that version is not installed yet:
 
 ```bash
 nvm install
 nvm use
 ```
 
-### 3) Install dependencies
+### 3. Install dependencies
 
 ```bash
 npm install
 ```
 
-## Running the App
-
-### Development mode (build + run)
+### 4. Start the app
 
 ```bash
 npm run dev
 ```
 
-### Build only
+Available scripts:
 
 ```bash
+npm run dev
 npm run build
-```
-
-### Run built version
-
-```bash
 npm run start
-```
-
-### Run tests
-
-```bash
 npm run test
 ```
 
-## Commands
+## Usage
+
+Once started, the application opens an interactive prompt:
+
+```text
+Pokedex >
+```
+
+Available commands:
 
 ### `help`
-Shows all available commands.
+
+Displays all available commands.
 
 ### `exit`
-Closes the Pokedex REPL.
+
+Exits the Pokedex CLI.
 
 ### `map`
-Displays the next 20 location areas from the PokeAPI.
+
+Shows the next page of PokÃ©mon location areas.
 
 ### `mapb`
-Displays the previous 20 location areas.
+
+Shows the previous page of location areas.
 
 ### `explore <location-area-name>`
-Shows Pokémon that can be encountered in a given location area.
+
+Lists the PokÃ©mon that can be encountered in a given area.
 
 Example:
 
-```txt
+```text
 Pokedex > explore pastoria-city-area
 ```
 
 ### `catch <pokemon-name>`
-Attempts to catch a Pokémon. Catch chance is based on the Pokémon's base experience.
+
+Attempts to catch a PokÃ©mon.
 
 Example:
 
-```txt
+```text
 Pokedex > catch pikachu
 ```
 
 ### `inspect <pokemon-name>`
-Displays details for a Pokémon **only if you have caught it**.
 
-Shows:
-- Name
-- Height
-- Weight
-- Stats
-- Types
+Displays detailed information for a PokÃ©mon you have already caught.
 
 ### `pokedex`
-Lists all Pokémon you have caught in the current session.
 
-## Example REPL Session
+Lists all PokÃ©mon caught in the current session.
 
-```txt
+Example session:
+
+```text
 Pokedex > help
-Welcome to the Pokedex!
-Usage:
-
-help: Displays a help message
-exit: Exit the Pokedex
-map: Displays the next 20 locations
-mapb: Displays the previous 20 locations
-explore: Explore a location area
-catch: Catch a pokemon
-inspect: Inspect a caught pokemon
-pokedex: List all caught pokemon
-
 Pokedex > map
-canalave-city-area
-eterna-city-area
-...
-
 Pokedex > explore pastoria-city-area
-Exploring pastoria-city-area...
-Found Pokemon:
- - tentacool
- - tentacruel
- - magikarp
- ...
-
 Pokedex > catch pidgey
-Throwing a Pokeball at pidgey...
-pidgey was caught!
-You may now inspect it with the inspect command.
-
 Pokedex > inspect pidgey
-Name: pidgey
-Height: 3
-Weight: 18
-Stats:
-  -hp: 40
-  -attack: 45
-  -defense: 40
-  -special-attack: 35
-  -special-defense: 35
-  -speed: 56
-Types:
-  - normal
-  - flying
-
 Pokedex > pokedex
-Your Pokedex:
- - pidgey
 ```
 
-## Project Structure
+## Contributing
 
-```txt
-src/
-  main.ts              # app entrypoint
-  repl.ts              # REPL loop + input parsing
-  state.ts             # shared app state
-  commands.ts          # command registry
-  command_*.ts         # command handlers
-  pokeapi.ts           # PokeAPI client
-  pokecache.ts         # in-memory cache with reaping
-  *.test.ts            # tests (Vitest)
+Contributions, suggestions, and improvements are welcome.
+
+If you want to contribute:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run the tests
+5. Open a pull request
+
+Example workflow:
+
+```bash
+git checkout -b feature/improve-readme
+npm test
+git commit -m "Improve README"
+git push origin feature/improve-readme
 ```
 
-## Notes
-
-- The Pokedex is stored in memory (`State`) and resets when the program exits.
-- API responses are cached in memory for faster repeated access.
-- This project is intentionally CLI-first (no GUI) to focus on architecture, TypeScript, and HTTP APIs.
-
-## Credits
-
-- [PokeAPI](https://pokeapi.co/) for the Pokémon data
-- Boot.dev for the project assignment and course structure
+When contributing, try to keep the project simple, readable, and aligned with the CLI-first nature of the application.
